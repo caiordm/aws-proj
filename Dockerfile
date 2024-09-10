@@ -20,7 +20,7 @@ RUN gem install bundler && bundle install
 COPY --chown=ruby:ruby . .
 
 # Exponha a porta que o Rails usará
-EXPOSE 8000
+EXPOSE 3000
 
 # Defina o comando padrão para iniciar o Rails
 CMD ["rails", "s"]
