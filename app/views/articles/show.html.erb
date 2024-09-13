@@ -1,0 +1,54 @@
+<div class="container min-h-full flex flex-col gap-8 sm:px-6 lg:px-8">
+    <header class="w-full flex">
+        <div class="w-full flex align-center justify-between items-center gap-4 text-2xl font-bold">
+          <div class="flex gap-4 items-center">
+            <div class="w-16 h-16 p-0 rounded-full overflow-hidden">
+              <% if @user.avatar.attached? %>
+                <%= image_tag rails_blob_url(@user.avatar, disposition: "inline" ), class:"w-full h-full object-cover" %>
+              <% else %>
+                <p>Avatar não disponível.</p>
+              <% end %>
+            </div>
+            <h1 class="text-xl font-bold">
+              Olá <%= current_user.name %>!
+            </h1>
+          </div>
+          <ul class="flex gap-2">
+            <li class="text-black">
+              <%= link_to "Meus Artigos", dashboard_path %>
+            </li>
+            <li class="text-blue-600">
+              <%= link_to "Novo Artigo", new_article_path %>
+            </li>
+            <li class="text-red-600">
+              <%= button_to "Sair" , destroy_user_session_path, method: :delete %>
+            </li>
+          </ul>
+        </div>
+      </header>
+  
+    <section class="container flex justify-start flex-col gap-8 h-full">
+      <div class="flex justify-start flex-col gap-2">
+        <% if @article.image.attached? %>
+        <div class="relative w-full h-40 rounded-lg overflow-hidden border-2 border-slate-300">
+            <%= image_tag url_for(@article.image), class: "absolute top-0 left-0 w-full h-full object-fit" %>
+        </div>
+        <% end %>
+        <h1 class="text-2xl font-bold">
+            <%= @article.title %>
+        </h1>
+        <p><%= @article.body %></p>
+        
+        <% if @user.id == @article.user.id %>
+        <ul class="self-end justify-self-end">
+            <li class="text-yellow-500 font-black"><%= link_to "Editar", edit_article_path(@article) %></li>
+            <li class="text-red-700 font-black">
+                <%= link_to "Deletar", article_path(@article), data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Quer mesmo deletar?"
+                } %>
+            </li>
+        </ul>
+        <% end %>
+    </section>
+  </div>

@@ -1,26 +1,27 @@
-FROM ruby:3.3.0-slim-bullseye AS app
+# Use an official Ruby runtime as a parent image
+FROM ruby:3.3.0
 
+# Set the working directory
 WORKDIR /app
 
-# Instala dependências e ferramentas necessárias
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends build-essential curl libpq-dev \
-    && rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man \
-    && apt-get clean \
-    && useradd --create-home ruby \
-    && chown ruby:ruby -R /app
+# Install dependencies
+RUN apt-get update && \
+    apt-get install -y \
+    build-essential \
+    nodejs \
+    postgresql-client && \
+    rm -rf /var/lib/apt/lists/*
 
-USER ruby
+# Install gems
+COPY Gemfile Gemfile.lock ./
+RUN gem install bundler && \
+    bundle install --without development test
 
-# Copie os arquivos Gemfile e Gemfile.lock e instale as dependências
-COPY --chown=ruby:ruby Gemfile Gemfile.lock ./
-RUN gem install bundler && bundle install
+# Copy the application code
+COPY . .
 
-# Copie o restante dos arquivos
-COPY --chown=ruby:ruby . .
-
-# Exponha a porta que o Rails usará
+# Expose ports
 EXPOSE 3000
 
-# Defina o comando padrão para iniciar o Rails
-CMD ["rails", "s"]
+# Set the entrypoint command
+CMD ["rails", "server", "-b", "0.0.0.0", "-p", "3000"]

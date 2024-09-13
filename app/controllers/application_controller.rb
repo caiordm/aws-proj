@@ -4,11 +4,11 @@ class ApplicationController < ActionController::Base
   protected
 
   def after_sign_in_path_for(resources)
-    dashboard_path
+    articles_path
   end
 
   def configure_permitted_parameters
-    attributes = [:email, :password, :avatar]
+    attributes = [:email, :password, :avatar, :name]
     devise_parameter_sanitizer.permit(:sign_up, keys: attributes)
   end
 end
