@@ -24,4 +24,5 @@ COPY . .
 EXPOSE 3000
 
 # Set the entrypoint command
-CMD ["rails", "server", "-b", "0.0.0.0", "-p", "3000"]
+# CMD ["rails", "server", "-b", "127.0.0.1", "-p", "3000"]
+CMD ["bash", "-c", "rm -f /app/tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0"]

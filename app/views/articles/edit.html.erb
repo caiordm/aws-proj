@@ -14,10 +14,13 @@
           </h1>
         </div>
         <ul class="flex gap-2">
-          <li class="text-black">
+          <li class="bg-black p-2 rounded-lg text-white">
             <%= link_to "Meus Artigos", dashboard_path %>
           </li>
-          <li class="text-red-600">
+          <li class="bg-blue-600 p-2 rounded-lg text-white">
+            <%= link_to "Novo Artigo", new_article_path, class %>
+          </li>
+          <li class="bg-red-600 p-2 rounded-lg text-white">
             <%= button_to "Sair" , destroy_user_session_path, method: :delete %>
           </li>
         </ul>

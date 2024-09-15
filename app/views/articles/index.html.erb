@@ -14,13 +14,13 @@
         </h1>
       </div>
       <ul class="flex gap-2">
-        <li class="text-black">
+        <li class="bg-black p-2 rounded-lg text-white">
           <%= link_to "Meus Artigos", dashboard_path %>
         </li>
-        <li class="text-blue-600">
+        <li class="bg-blue-600 p-2 rounded-lg text-white">
           <%= link_to "Novo Artigo", new_article_path %>
         </li>
-        <li class="text-red-600">
+        <li class="bg-red-600 p-2 rounded-lg text-white">
           <%= button_to "Sair" , destroy_user_session_path, method: :delete %>
         </li>
       </ul>
@@ -35,21 +35,27 @@
       <span>Artigos mais recentes publicados!</span>
     </div>
     <div class="container flex justify-start gap-8">
-      <% @articles.each do |article| %>
-        <%= link_to article_path(article), class: "flex flex-col w-64 h-28 rounded-lg gap-4" do %>
-        <% if article.image.attached? %>
-          <%= image_tag url_for(article.image), class: "max-w-full rounded-lg" %>
-        <% else %>
-          <p>Imagem não disponível.</p>
+      <% if @articles != nil %>
+        <% @articles.each do |article| %>
+
+          <%= link_to article_path(article), class: "flex flex-col w-64 h-28 rounded-lg gap-4" do %>
+            <% if article.image.attached? %>
+              <%= image_tag url_for(article.image), class: "max-w-full rounded-lg border border-slate-400" %>
+            <% else %>
+              <p>Imagem não disponível.</p>
+            <% end %>
+            <div class="flex flex-col gap-0">
+              <h2 class="text-xl font-bold"><%= article.title %></h2>
+              <div class="flex justify-between">
+                <p class="text-gray-500 text-xs"><%= article.user.name %></p>
+                <p class="text-gray-500 text-xs"><%= article.created_at.strftime("%H:%M:%S %d/%m/%y") %></p>
+              </div>
+            </div>
+          <% end %>
+          
         <% end %>
-        <div class="flex flex-col gap-0">
-          <h2 class="text-xl font-bold"><%= article.title %></h2>
-          <div class="flex justify-between">
-            <p class="text-gray-500 text-xs"><%= article.user.name %></p>
-            <p class="text-gray-500 text-xs"><%= article.created_at %></p>
-          </div>
-        </div>
-        <% end %>
+      <% else %>
+          <h2 class="text-xl font-bold">Nenhum artigo publicado ainda!</h1>
       <% end %>
     </div>
   </section>
